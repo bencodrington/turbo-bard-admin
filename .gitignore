@@ -1,5 +1,8 @@
 node_modules
 
+/static/output
+!/static/output/README.md
+
 # Output
 .output
 .vercel

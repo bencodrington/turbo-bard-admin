@@ -18,7 +18,7 @@ export const actions = {
     // Extract the file and file name from the submitted form data
     const formData = await request.formData();
     console.log(formData);
-    const file = formData.get('startingFileLocation') as File;
+    const file = formData.get('inputFile') as File;
     if (!file) {
       return error(500, 'Failed to receive file.');
     }

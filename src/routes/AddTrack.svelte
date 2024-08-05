@@ -11,7 +11,7 @@
 	let outputFileName = '';
 	$: outputFileName = trackName.toLowerCase().replaceAll(' ', '-');
 
-	let startingFileLocation = '';
+	let inputFile = '';
 
 	const addTag = () => {
 		if (currentTag.length === 0) return;
@@ -47,10 +47,6 @@
 				<label for="isMusic">Is music</label>
 				<input type="checkbox" name="isMusic" bind:checked={isMusic} />
 			</div>
-			<div class="form-row">
-				<label for="outputFileName">Output file name</label>
-				<input name="outputFileName" bind:value={outputFileName} />
-			</div>
 			<!-- TODO: -->
 			<!-- <div class="form-row">
 			<label for="isLoop">Is loop</label>
@@ -75,10 +71,15 @@
 			</div>
 
 			<div class="form-row">
-				<label for="startingFileLocation">File</label>
+				<label for="outputFileName">Output file name</label>
+				<input name="outputFileName" bind:value={outputFileName} />
+			</div>
+
+			<div class="form-row">
+				<label for="inputFile">File</label>
 				<div class="column">
-					<input type="file" name="startingFileLocation" bind:value={startingFileLocation} />
-					<button type="submit" disabled={startingFileLocation === ''}
+					<input type="file" name="inputFile" bind:value={inputFile} accept="audio/*" />
+					<button type="submit" disabled={inputFile === '' || outputFileName === ''}
 						>Convert to .mp3 and .webm
 					</button>
 				</div>

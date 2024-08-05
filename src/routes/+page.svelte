@@ -8,12 +8,11 @@
 	<AddTrack />
 </div>
 
-
 <style>
-  .dashboard {
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 4rem;
-  }
+	.dashboard {
+		padding: 2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 4rem;
+	}
 </style>

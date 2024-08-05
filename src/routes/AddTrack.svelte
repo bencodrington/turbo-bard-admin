@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { v4 as uuidv4 } from 'uuid';
 
 	let trackName = '';
@@ -24,12 +25,32 @@
 	};
 
 	$: tagsString = [...(isMusic ? ['music'] : []), ...tags].map((tag) => `"${tag}"`).join(', ');
+
+	const copyEntry = () => {
+		const element = document.querySelector('.output code');
+		if (element === null) {
+			console.error('Unable to find output element to copy its contents.');
+			return;
+		}
+		// Select the text contents inside the output element.
+		var range = document.createRange();
+		range.selectNodeContents(element);
+		// Copy it to the clipboard.
+		navigator.clipboard.writeText(range.toString());
+	};
 </script>
 
 <div class="add-track-container">
 	<h2>Add a track</h2>
 	<div class="two-column">
-		<form method="POST" class="form-rows" enctype="multipart/form-data">
+		<!-- Override default form submission behaviour with use:enhance to avoid
+		 	resetting the form after clicking submit. -->
+		<form
+			method="POST"
+			class="form-rows"
+			enctype="multipart/form-data"
+			use:enhance={() => () => {}}
+		>
 			<div class="form-row">
 				<label for="trackName">Name</label>
 				<input name="trackName" bind:value={trackName} />
@@ -88,28 +109,38 @@
 
 		<pre class="output">
       <code>
-        ,
-        "{uuidv4()}": {'{'}
-          "name": "{trackName}",
-          "source": {'{'}
-            "author": "{author}",
-            "urls": [ "{url}" ]
-          {'}'},
-          "tags": [ {tagsString} ],
-          "fileName": "{outputFileName}",
-          "type": "LOOP"
-        {'}'}
+,
+"{uuidv4()}": {'{'}
+	"name": "{trackName}",
+	"source": {'{'}
+		"author": "{author}",
+		"urls": [ "{url}" ]
+	{'}'},
+	"tags": [ {tagsString} ],
+	"fileName": "{outputFileName}",
+	"type": "LOOP"
+{'}'}
       </code>
   </pre>
 	</div>
 
 	<div class="instructions">
 		<ol>
-			<li>TODO: the entry has been copied to your clipboard. Navigate to TODO: and paste it.</li>
-			<li>TODO: command to upload the tracks.json.</li>
 			<li>
 				Upload the .mp3 and .webm files from the <code>output</code>
 				directory to <code>https://console.cloud.google.com/</code>
+			</li>
+			<li>
+				<button class="button-padding" on:click={copyEntry}>Copy</button> the JSON list entry above.
+			</li>
+			<li>Navigate to <code>turbo-bard/database/tracks.json</code> and paste it.</li>
+			<li>
+				<p>From <code>turbo-bard/database</code>, run</p>
+				<code
+					>firestore-import -a turbo-bard-firebase-adminsdk-mnkgs-6b3c744dd4.json -b tracks.json -n
+					tracks</code
+				>
+				<p>or check the README there for more info.</p>
 			</li>
 		</ol>
 	</div>
@@ -178,7 +209,11 @@
 		width: auto;
 	}
 
-	pre,
+	.output {
+		padding: 0 2rem;
+	}
+
+	.output,
 	.instructions code {
 		background: var(--grey-2);
 		border-radius: 3px;
@@ -193,8 +228,13 @@
 		line-height: 1.75rem;
 	}
 
-	.instructions code {
+	.instructions code,
+	.button-padding {
 		padding: 0 0.25rem;
 		margin: 0 0.25rem;
+	}
+
+	ol li {
+		display: list-item;
 	}
 </style>

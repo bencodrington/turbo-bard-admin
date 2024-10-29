@@ -12,6 +12,12 @@
 	let outputFileName = '';
 	$: outputFileName = trackName.toLowerCase().replaceAll(' ', '-');
 
+	let randomId = uuidv4();
+	$: {
+		outputFileName;
+		randomId = uuidv4();
+	}
+
 	let inputFile = '';
 
 	const addTag = () => {
@@ -110,7 +116,7 @@
 		<pre class="output">
       <code>
 ,
-"{uuidv4()}": {'{'}
+"{randomId}": {'{'}
 	"name": "{trackName}",
 	"source": {'{'}
 		"author": "{author}",

@@ -29,6 +29,9 @@
 	const removeTag = (tagToRemove: string) => {
 		tags = [...tags.filter((tag) => tag !== tagToRemove)];
 	};
+	const removeAllTags = () => {
+		tags = [];
+	};
 
 	$: tagsString = [...(isMusic ? ['music'] : []), ...tags].map((tag) => `"${tag}"`).join(', ');
 
@@ -90,10 +93,11 @@
 						{#each tags as tag}
 							<li>
 								<span>{tag}</span>
-								<button on:click={() => removeTag(tag)}>Remove</button>
+								<button type="button" on:click={() => removeTag(tag)}>Remove</button>
 							</li>
 						{/each}
 					</ul>
+					<button type="button" on:click={removeAllTags} class="remove-all-tags">Remove all</button>
 				</div>
 			</div>
 
@@ -137,7 +141,8 @@
 				directory to <code>https://console.cloud.google.com/</code>
 			</li>
 			<li>
-				<button class="button-padding" on:click={copyEntry}>Copy</button> the JSON list entry above.
+				<button type="button" class="button-padding" on:click={copyEntry}>Copy</button> the JSON list
+				entry above.
 			</li>
 			<li>Navigate to <code>turbo-bard/database/tracks.json</code> and paste it.</li>
 			<li>
@@ -189,6 +194,10 @@
 	.form-row button {
 		padding: 0 0.5rem;
 		width: 5rem;
+	}
+
+	.form-row button.remove-all-tags {
+		width: 100%;
 	}
 	.form-row input[type='checkbox'] {
 		height: auto;

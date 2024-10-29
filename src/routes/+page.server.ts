@@ -51,7 +51,11 @@ export const actions = {
         return;
       }
       console.log('All conversions completed.');
-      fs.unlinkSync(tempFileLocation);
+      try {
+        fs.unlinkSync(tempFileLocation);
+      } catch (e) {
+        console.error(`Failed to delete ${tempFileLocation}. Error: ${e}.`)
+      }
       console.log('Deleted temporary file.');
     }
     // Actually run the conversions
